@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pipeline-train-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pipeline-train
+  template:
+    metadata:
+      labels:
+        app: pipeline-train
+    spec:
+      containers:
+      - name: pipeline-train
+        image: my-ds-pipeline-image
+        imagePullPolicy: Never
+        command: ["python"]
+        args: ["pipeline_train.py"]
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pipeline-test-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pipeline-test
+  template:
+    metadata:
+      labels:
+        app: pipeline-test
+    spec:
+      containers:
+      - name: pipeline-test
+        image: my-ds-pipeline-image
+        imagePullPolicy: Never
+        command: ["python"]
+        args: ["pipeline_test.py"]
